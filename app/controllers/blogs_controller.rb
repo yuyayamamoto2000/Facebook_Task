@@ -35,6 +35,11 @@ class BlogsController < ApplicationController
     end
   end
 
+  def destroy
+    @blog.destroy(blog_params)
+    redirect_to blogs_path, notice: "ブログを消去しました。"
+  end
+
 private
 
 def set_blog
