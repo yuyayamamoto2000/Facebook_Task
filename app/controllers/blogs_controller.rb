@@ -10,11 +10,12 @@ class BlogsController < ApplicationController
   end
 
   def create
+    @blog = Blog.new(blog_params)
     if params[:back]
        render :new
     else
       if @blog.save
-        redirect_to new_blog_path, notice: 'ブログを作成しました。'
+        redirect_to blogs_path, notice: 'ブログを作成しました。'
       else
         render :new
       end
@@ -28,7 +29,7 @@ class BlogsController < ApplicationController
   end
 
   def update
-    if blog_update(blog_params)
+    if @blog.update(blog_params)
       redirect_to blogs_path, notice: "ブログを編集しました"
     else
       render :edit
@@ -36,7 +37,7 @@ class BlogsController < ApplicationController
   end
 
   def destroy
-    @blog.destroy(blog_params)
+     @blog.destroy
     redirect_to blogs_path, notice: "ブログを消去しました。"
   end
 
@@ -52,7 +53,7 @@ def set_blog
 end
 
 def blog_params
-  params.require(:blog).permit(:title, :content)
+  params.require(:blog).permit(:title,:content)
 end
 
 end
