@@ -64,7 +64,6 @@ class FeedsController < ApplicationController
   end
 
   private
-
     def set_feed
       @feed = Feed.find(params[:id])
     end
