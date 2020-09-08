@@ -6,9 +6,6 @@ Rails.application.routes.draw do
       post :confirm
       patch :confirm
     end
-    member do
-      patch :confirm
-    end
   end
   resources :blogs do
     collection do
