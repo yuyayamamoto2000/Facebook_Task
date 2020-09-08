@@ -11,7 +11,6 @@ module FeedsHelper
     end
   end
   def confirm_form_method
-    @feed.id ? 'patch' : 'post' # 作成時はpost, 編集時は patchを指定
+    @feed.id ? 'patch' : 'post' # 新規投稿はpost, 投稿編集時は patchを指定。
   end
-end
 end
