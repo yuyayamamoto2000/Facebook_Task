@@ -1,5 +1,9 @@
 class FeedsController < ApplicationController
   before_action :set_feed, only: [:show, :edit, :update, :destroy]
+  before_action :current_user
+  before_action :authenticate_user
+  before_action :logged_in?
+  before_action :check_user, only: [:edit,:update,:destroy]
 
   def index
     @feeds = Feed.all
@@ -9,15 +13,19 @@ class FeedsController < ApplicationController
   end
 
   def new
-    @feed = Feed.new
+   if params[:back]
+     @feed = Feed.new(feed_params)
+   else
+     @feed = Feed.new
+   end
   end
+
 
   def edit
   end
 
   def create
-    @feed = Feed.new(feed_params)
-
+     @feed = current_user.feeds.build(feed_params)
     respond_to do |format|
       if @feed.save
         format.html { redirect_to @feed, notice: 'Feed was successfully created.' }
@@ -49,6 +57,12 @@ class FeedsController < ApplicationController
     end
   end
 
+  def confirm
+   @feed = current_user.feeds.build(feed_params)
+   @feed.id = params[:id]
+   render :new if @feed.invalid?
+  end
+
   private
 
     def set_feed
@@ -56,6 +70,6 @@ class FeedsController < ApplicationController
     end
 
     def feed_params
-      params.require(:feed).permit(:image, :image_cache)
+      params.require(:feed).permit(:image, :image_cache, :user_id, :content)
     end
 end
